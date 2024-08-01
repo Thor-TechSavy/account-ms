@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+package "Dto" {
+  [Account Dtos]
+}
+
+package "Controller" {
+  [Account Http] --|> [Account Contract]
+}
+
+package "repository" {
+  [Account Repository]
+}
+
+package "Service" {
+  [Account Service]
+}
+
+database "Account DB" {
+  folder "Account table" as accounts {
+    [Account 1, 2, ..]
+  }
+}
+
+Http -down-> [Account Http]
+
+[Account Http] -> [Account Dtos]
+
+[Account Http] --> [Account Service]
+
+[Account Service] -> [Account Repository]
+
+[Account Repository] --> [Account DB]
+
+@enduml
