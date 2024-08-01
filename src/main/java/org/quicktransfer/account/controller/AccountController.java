@@ -2,7 +2,6 @@ package org.quicktransfer.account.controller;
 
 import org.quicktransfer.account.dto.AccountDetailsDto;
 import org.quicktransfer.account.dto.CreateAccountDto;
-import org.quicktransfer.account.dto.UpdateAccountDto;
 import org.quicktransfer.account.entity.AccountEntity;
 import org.quicktransfer.account.exceptions.InvalidRequestException;
 import org.quicktransfer.account.service.AccountService;
@@ -10,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -29,7 +29,6 @@ public class AccountController {
 
         AccountDetailsDto accountDetailsDto = new AccountDetailsDto();
         accountDetailsDto.setOwnerId(accountEntity.getOwnerId());
-        accountDetailsDto.setBalance(accountEntity.getBalance());
         accountDetailsDto.setCurrency(accountEntity.getCurrency());
         accountDetailsDto.setFirstName(accountEntity.getFirstName());
         accountDetailsDto.setLastName(accountEntity.getLastName());
@@ -39,10 +38,18 @@ public class AccountController {
 
     }
 
-    @PutMapping("/{ownerId}")
-    public void updateAccount(@PathVariable UUID ownerId, @RequestBody final UpdateAccountDto accountDto) {
+    @PutMapping("/{ownerId}/credit")
+    public void creditAccount(@PathVariable final UUID ownerId, @RequestParam final BigDecimal credit) {
 
-        accountService.updateAccount(ownerId, accountDto);
+        accountService.updateAccountBalance(ownerId, credit);
+
+    }
+
+    @PutMapping("/{ownerId}/debit")
+    public void debitAccount(@PathVariable UUID ownerId, @RequestParam final BigDecimal debit) {
+
+        BigDecimal debitAmount = debit.multiply(new BigDecimal("-1"));
+        accountService.updateAccountBalance(ownerId, debitAmount);
 
     }
 

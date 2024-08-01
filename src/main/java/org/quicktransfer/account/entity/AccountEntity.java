@@ -6,14 +6,15 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
+@Table(name = "ACCOUNT")
 public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private UUID id;
+    private Long id;
 
-    @Column(name = "ownerId", nullable = false)
+    @Column(name = "ownerId", nullable = false, unique = true)
     private UUID ownerId = UUID.randomUUID();
 
     @Column(name = "firstName", nullable = false)
@@ -28,10 +29,11 @@ public class AccountEntity {
     @Column(name = "currency", nullable = false)
     private String currency;
 
-    @Column(name = "balance", nullable = false)
-    private BigDecimal balance;
 
-    public UUID getId() {
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private BalanceEntity balance;
+
+    public Long getId() {
         return id;
     }
 
@@ -71,11 +73,11 @@ public class AccountEntity {
         this.currency = currency;
     }
 
-    public BigDecimal getBalance() {
+    public BalanceEntity getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(BalanceEntity balance) {
         this.balance = balance;
     }
 }
