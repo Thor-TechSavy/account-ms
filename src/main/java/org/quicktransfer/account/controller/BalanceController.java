@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("v1/balance")
+@RequestMapping("v1/account/balance")
 public class BalanceController {
 
     private final BalanceService balanceService;
@@ -25,7 +25,7 @@ public class BalanceController {
         BalanceEntity balance = balanceService.getBalance(ownerId);
 
         BalanceDto balanceDto = new BalanceDto();
-        balanceDto.setBalance(balance.getBalance());
+        balanceDto.setBalance(balance.getAmount());
         balanceDto.setOwnerId(balance.getAccount().getOwnerId());
         balanceDto.setCurrency(balance.getAccount().getCurrency());
         balanceDto.setLastUpdate(balance.getLastUpdate());

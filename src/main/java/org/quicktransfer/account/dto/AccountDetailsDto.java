@@ -10,19 +10,6 @@ public class AccountDetailsDto {
     private String lastName;
     private String dob;
     private String currency;
-    private BigDecimal balance;
-
-    public AccountDetailsDto() {
-
-    }
-
-    public AccountDetailsDto(String firstName, String lastName, String dob, String currency, BigDecimal balance) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dob = dob;
-        this.currency = currency;
-        this.balance = balance;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -54,14 +41,6 @@ public class AccountDetailsDto {
 
     public void setCurrency(String currency) {
         this.currency = currency;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
     }
 
     public void setOwnerId(UUID ownerId) {

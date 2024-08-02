@@ -15,7 +15,7 @@ public class BalanceEntity {
     private Long id;
 
     @Column(name = "balance")
-    private BigDecimal balance;
+    private BigDecimal amount;
 
     @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "ownerId")
@@ -28,12 +28,12 @@ public class BalanceEntity {
         return id;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public AccountEntity getAccount() {

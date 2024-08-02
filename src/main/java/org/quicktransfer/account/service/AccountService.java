@@ -1,16 +1,15 @@
 package org.quicktransfer.account.service;
 
 import org.quicktransfer.account.dto.CreateAccountDto;
-import org.quicktransfer.account.dto.UpdateAccountDto;
 import org.quicktransfer.account.entity.AccountEntity;
 import org.quicktransfer.account.entity.BalanceEntity;
 import org.quicktransfer.account.exceptions.AccountNotFoundException;
 import org.quicktransfer.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,9 +30,8 @@ public class AccountService {
         accountEntity.setLastName(accountDto.getLastName());
         accountEntity.setDob(accountDto.getDob());
 
-
         BalanceEntity balanceEntity = new BalanceEntity();
-        balanceEntity.setBalance(new BigDecimal(0));
+        balanceEntity.setAmount(new BigDecimal(0));
         balanceEntity.setAccount(accountEntity);
         balanceEntity.setLastUpdate(Instant.now());
 
@@ -44,23 +42,19 @@ public class AccountService {
 
     }
 
-    public AccountEntity getAccount(UUID ownerId) {
-        Optional<AccountEntity> account = accountRepository.findByOwnerId(ownerId);
-        if (account.isPresent()) {
-            return account.get();
-        } else {
-            throw new AccountNotFoundException("Account doesn't exist for owner id: " + ownerId);
-        }
+    @Transactional
+    public AccountEntity findAccountByOwnerId(UUID ownerId) throws AccountNotFoundException {
+        return accountRepository.findByOwnerId(ownerId)
+                .orElseThrow(() -> new AccountNotFoundException("Account doesn't exist for owner id: " + ownerId));
     }
 
-    public void updateAccountBalance(UUID ownerId, BigDecimal amount) {
+    @Transactional
+    public void updateAccount(AccountEntity accountEntity) {
 
-        AccountEntity account = getAccount(ownerId);
+        accountEntity.setLastUpdateTime(Instant.now());
 
-        //   BigDecimal updateAmount = account.getBalance().add(amount);
-        // account.setBalance(updateAmount);
-
-        accountRepository.save(account);
+        accountRepository.save(accountEntity);
     }
+
 
 }

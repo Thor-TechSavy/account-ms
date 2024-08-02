@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -38,19 +37,21 @@ public class AccountController {
 
     }
 
-    @PutMapping("/{ownerId}/credit")
-    public void creditAccount(@PathVariable final UUID ownerId, @RequestParam final BigDecimal credit) {
 
-        accountService.updateAccountBalance(ownerId, credit);
 
-    }
+    @GetMapping("/{ownerId}")
+    public ResponseEntity<AccountDetailsDto> findAccount(@PathVariable UUID ownerId) {
 
-    @PutMapping("/{ownerId}/debit")
-    public void debitAccount(@PathVariable UUID ownerId, @RequestParam final BigDecimal debit) {
+        AccountEntity account = accountService.findAccountByOwnerId(ownerId);
 
-        BigDecimal debitAmount = debit.multiply(new BigDecimal("-1"));
-        accountService.updateAccountBalance(ownerId, debitAmount);
+        AccountDetailsDto accountDetailsDto = new AccountDetailsDto();
+        accountDetailsDto.setOwnerId(ownerId);
+        accountDetailsDto.setCurrency(account.getCurrency());
+        accountDetailsDto.setFirstName(account.getFirstName());
+        accountDetailsDto.setLastName(account.getLastName());
+        accountDetailsDto.setDob(account.getDob());
 
+        return new ResponseEntity<>(accountDetailsDto, HttpStatus.OK);
     }
 
     private void validateAccountCreationRequest(final CreateAccountDto accountDto) {

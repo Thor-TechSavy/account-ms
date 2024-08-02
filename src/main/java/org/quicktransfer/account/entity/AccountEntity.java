@@ -3,6 +3,7 @@ package org.quicktransfer.account.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +30,11 @@ public class AccountEntity {
     @Column(name = "currency", nullable = false)
     private String currency;
 
+    @Column(name = "creationTime", nullable = false)
+    private Instant creationTime = Instant.now();
+
+    @Column(name = "lastUpdateTime")
+    private Instant lastUpdateTime;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private BalanceEntity balance;
@@ -71,6 +77,18 @@ public class AccountEntity {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public Instant getCreationTime() {
+        return creationTime;
+    }
+
+    public Instant getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Instant lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
 
     public BalanceEntity getBalance() {
