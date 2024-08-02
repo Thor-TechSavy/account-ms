@@ -72,7 +72,7 @@ public class TransactionService {
             transaction.setCreditOperation(adjustedCreditAmount);
             transaction.setStatus(TransactionStatus.SUCCESSFUL);
 
-        } catch (InsufficientAccountBalanceException | AccountNotFoundException e) {
+        } catch (InsufficientAccountBalanceException | AccountNotFoundException | ExchangeRateException e) {
             transaction.setStatus(TransactionStatus.FAILED);
             update(transaction);
 
