@@ -1,9 +1,8 @@
-package com.quicktransfer.account.entity;
+package com.quicktransfer.account.dto;
 
-import java.time.Instant;
 import java.util.UUID;
 
-public class RequestIdentifier {
+public class RequestIdentifierDto {
 
     private String calleeName;
     private String requestTime;

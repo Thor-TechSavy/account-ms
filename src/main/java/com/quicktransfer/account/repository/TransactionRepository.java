@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
     Optional<TransactionEntity> findByTransactionUUID(UUID transactionUUID);
+
+    Optional<TransactionEntity> findByRequestIdentifier(String requestIdentifier);
 }

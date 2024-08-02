@@ -2,10 +2,9 @@ package com.quicktransfer.account.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.quicktransfer.account.client.ExchangeRateClient;
-import com.quicktransfer.account.dto.RequestTransactionDto;
-import com.quicktransfer.account.dto.TransactionDetailsDto;
+import com.quicktransfer.account.dto.RequestIdentifier;
 import com.quicktransfer.account.entity.AccountEntity;
-import com.quicktransfer.account.entity.RequestIdentifier;
+import com.quicktransfer.account.dto.RequestIdentifierDto;
 import com.quicktransfer.account.entity.TransactionEntity;
 import com.quicktransfer.account.enums.TransactionStatus;
 import com.quicktransfer.account.exceptions.AccountNotFoundException;
@@ -15,7 +14,6 @@ import com.quicktransfer.account.exceptions.TransactionException;
 import com.quicktransfer.account.repository.TransactionRepository;
 import com.quicktransfer.account.util.JsonUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -37,7 +35,18 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionEntity creditAndDebitOperation(RequestTransactionDto transactionDto) {
+    public TransactionEntity creditAndDebitOperation(RequestIdentifier transactionDto) {
+        String s = null;
+        try {
+            s = JsonUtil.getMapper().writeValueAsString(transactionDto.getRequestIdentifier());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Optional<TransactionEntity> existingTransaction = transactionRepository.findByRequestIdentifier(s);
+        if (existingTransaction.isPresent() && existingTransaction.get().getStatus() == TransactionStatus.SUCCESSFUL) {
+            return existingTransaction.get();
+        }
 
         TransactionEntity transaction = createTransaction(transactionDto);
 
@@ -101,20 +110,14 @@ public class TransactionService {
     }
 
 
-    @Transactional
-    public TransactionEntity createTransaction(RequestTransactionDto transactionDto) {
+    public TransactionEntity createTransaction(RequestIdentifier transactionDto) {
 
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setFromOwnerId(transactionDto.getFromOwnerId());
         transactionEntity.setToOwnerId(transactionDto.getToOwnerId());
 
-        RequestIdentifier identifier = new RequestIdentifier();
-        identifier.setCalleeName(transactionDto.getCalleeName());
-        identifier.setRequestTime(transactionDto.getTransferRequestCreationTime());
-        identifier.setTransferRequestId(transactionDto.getTransferRequestUUID());
-
         try {
-            String jsonIdentifier = JsonUtil.getMapper().writeValueAsString(identifier);
+            String jsonIdentifier = JsonUtil.getMapper().writeValueAsString(transactionDto.getRequestIdentifier());
             transactionEntity.setRequestIdentifier(jsonIdentifier);
         } catch (JsonProcessingException e) {
             throw new TransactionException(e.getMessage());

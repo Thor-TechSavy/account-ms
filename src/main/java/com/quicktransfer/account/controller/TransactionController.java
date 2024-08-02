@@ -2,7 +2,7 @@ package com.quicktransfer.account.controller;
 
 import com.quicktransfer.account.entity.TransactionEntity;
 import com.quicktransfer.account.service.TransactionService;
-import com.quicktransfer.account.dto.RequestTransactionDto;
+import com.quicktransfer.account.dto.RequestIdentifier;
 import com.quicktransfer.account.dto.TransactionDetailsDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionDetailsDto> performDebitAndCreditOperations(@RequestBody RequestTransactionDto transactionDto) {
+    public ResponseEntity<TransactionDetailsDto> performDebitAndCreditOperations(@RequestBody RequestIdentifier transactionDto) {
 
         TransactionEntity entity = transactionService.creditAndDebitOperation(transactionDto);
         TransactionDetailsDto detailsDto = mapToDto(entity);
