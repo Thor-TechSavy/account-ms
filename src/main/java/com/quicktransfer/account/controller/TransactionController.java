@@ -21,7 +21,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionDetailsDto> creditAndDebitOperations(@RequestBody RequestTransactionDto transactionDto) {
+    public ResponseEntity<TransactionDetailsDto> performDebitAndCreditOperations(@RequestBody RequestTransactionDto transactionDto) {
 
         TransactionEntity entity = transactionService.creditAndDebitOperation(transactionDto);
         TransactionDetailsDto detailsDto = mapToDto(entity);
