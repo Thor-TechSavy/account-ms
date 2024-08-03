@@ -4,7 +4,6 @@ import com.quicktransfer.account.entity.AccountEntity;
 import com.quicktransfer.account.entity.BalanceEntity;
 import com.quicktransfer.account.exceptions.AccountNotFoundException;
 import com.quicktransfer.account.repository.AccountRepository;
-import com.quicktransfer.account.dto.CreateAccountDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +20,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public AccountEntity createAccount(CreateAccountDto accountDto) {
-
-        AccountEntity accountEntity = new AccountEntity();
-
-        accountEntity.setCurrency(accountDto.getCurrency());
-        accountEntity.setFirstName(accountDto.getFirstName());
-        accountEntity.setLastName(accountDto.getLastName());
-        accountEntity.setDob(accountDto.getDob());
+    public AccountEntity createAccount(AccountEntity accountEntity) {
 
         BalanceEntity balanceEntity = new BalanceEntity();
         balanceEntity.setAmount(new BigDecimal(0));
@@ -43,7 +35,7 @@ public class AccountService {
     }
 
     @Transactional
-    public AccountEntity findAccountByOwnerId(UUID ownerId) throws AccountNotFoundException {
+    public AccountEntity getAccount(UUID ownerId) throws AccountNotFoundException {
         return accountRepository.findByOwnerId(ownerId)
                 .orElseThrow(() -> new AccountNotFoundException("Account doesn't exist for owner id: " + ownerId));
     }
@@ -55,6 +47,5 @@ public class AccountService {
 
         accountRepository.save(accountEntity);
     }
-
 
 }

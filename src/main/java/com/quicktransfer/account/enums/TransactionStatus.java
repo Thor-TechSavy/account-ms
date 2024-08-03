@@ -3,7 +3,7 @@ package com.quicktransfer.account.enums;
 public enum TransactionStatus {
 
     SUCCESSFUL("successful"),
-    IN_PROGRESS("inProgress"),
+    PROCESSING("processing"),
     FAILED("failed");
 
     private final String value;

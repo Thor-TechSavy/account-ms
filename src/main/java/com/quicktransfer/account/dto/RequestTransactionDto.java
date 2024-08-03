@@ -3,12 +3,12 @@ package com.quicktransfer.account.dto;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class RequestIdentifier {
+public class RequestTransactionDto {
 
     private UUID fromOwnerId;
     private UUID toOwnerId;
     private BigDecimal amount;
-    private RequestIdentifier requestIdentifier;
+    private RequestIdentifierDto requestIdentifier;
 
     public UUID getFromOwnerId() {
         return fromOwnerId;
@@ -34,11 +34,11 @@ public class RequestIdentifier {
         this.amount = amount;
     }
 
-    public RequestIdentifier getRequestIdentifier() {
+    public RequestIdentifierDto getRequestIdentifier() {
         return requestIdentifier;
     }
 
-    public void setRequestIdentifier(RequestIdentifier requestIdentifier) {
+    public void setRequestIdentifier(RequestIdentifierDto requestIdentifier) {
         this.requestIdentifier = requestIdentifier;
     }
 }

@@ -1,6 +1,6 @@
 package com.quicktransfer.account.exceptions;
 
-public class InvalidRequestException extends RuntimeException {
+public class InvalidRequestException extends TransactionException {
 
     private static final long serialVersionUID = -1205229011134289180L;
 

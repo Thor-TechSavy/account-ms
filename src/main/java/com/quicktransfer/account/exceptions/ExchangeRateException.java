@@ -1,6 +1,6 @@
 package com.quicktransfer.account.exceptions;
 
-public class ExchangeRateException extends RuntimeException {
+public class ExchangeRateException extends TransactionException {
 
     private static final long serialVersionUID = -2860968399524171926L;
 

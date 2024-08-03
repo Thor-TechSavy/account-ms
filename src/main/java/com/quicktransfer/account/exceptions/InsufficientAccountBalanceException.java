@@ -1,6 +1,6 @@
 package com.quicktransfer.account.exceptions;
 
-public class InsufficientAccountBalanceException extends RuntimeException {
+public class InsufficientAccountBalanceException extends TransactionException {
 
     private static final long serialVersionUID = 8841681170063045212L;
 

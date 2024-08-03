@@ -1,6 +1,6 @@
 package com.quicktransfer.account.exceptions;
 
-public class AccountNotFoundException extends RuntimeException {
+public class AccountNotFoundException extends TransactionException {
 
     private static final long serialVersionUID = -8206361842162195593L;
 

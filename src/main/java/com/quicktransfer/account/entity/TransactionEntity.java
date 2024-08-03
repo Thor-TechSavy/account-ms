@@ -25,6 +25,9 @@ public class TransactionEntity {
     @Column(name = "toOwnerId", nullable = false)
     private UUID toOwnerId;
 
+    @Column(name = "transaction_amount", nullable = false)
+    private BigDecimal txnAmt;
+
     @Column(name = "debitOperation")
     private BigDecimal debitOperation;
 
@@ -104,6 +107,14 @@ public class TransactionEntity {
 
     public UUID getTransactionUUID() {
         return transactionUUID;
+    }
+
+    public BigDecimal getTxnAmt() {
+        return txnAmt;
+    }
+
+    public void setTxnAmt(BigDecimal txnAmt) {
+        this.txnAmt = txnAmt;
     }
 
     public Instant getCreationTime() {
