@@ -16,6 +16,8 @@ public class RequestTransactionDto {
     @Schema(description = "transaction amount", requiredMode = Schema.RequiredMode.REQUIRED, example = "100")
     private BigDecimal amount;
 
+    @Schema(description = "identifier composed of callee name, fundsTransferRequestId, fundsTransferRequestCreationTime",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private RequestIdentifierDto requestIdentifier;
 
     public UUID getFromOwnerId() {
