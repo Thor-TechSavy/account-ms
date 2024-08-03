@@ -44,7 +44,6 @@ public class AccountService {
     public void updateAccount(AccountEntity accountEntity) {
 
         accountEntity.setLastUpdateTime(Instant.now());
-
         accountRepository.save(accountEntity);
     }
 

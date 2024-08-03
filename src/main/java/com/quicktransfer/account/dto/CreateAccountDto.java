@@ -1,23 +1,20 @@
 package com.quicktransfer.account.dto;
 
-import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CreateAccountDto {
 
+    @Schema(description = "first name", requiredMode = Schema.RequiredMode.REQUIRED, example = "TARS")
     private String firstName;
+
+    @Schema(description = "last name", requiredMode = Schema.RequiredMode.REQUIRED, example = "CASE")
     private String lastName;
+
+    @Schema(description = "date of birth", requiredMode = Schema.RequiredMode.REQUIRED, example = "10-10-2000")
     private String dob;
+
+    @Schema(description = "currency", requiredMode = Schema.RequiredMode.REQUIRED, example = "EUR")
     private String currency;
-    private BigDecimal balance;
-
-    public CreateAccountDto() {}
-
-    public CreateAccountDto(String firstName, String lastName, String currency, String dob) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.currency = currency;
-        this.dob = dob;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -33,10 +30,6 @@ public class CreateAccountDto {
 
     public void setCurrency(String currency) {
         this.currency = currency;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
     }
 
     public String getFirstName() {
@@ -55,7 +48,4 @@ public class CreateAccountDto {
         return currency;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
 }

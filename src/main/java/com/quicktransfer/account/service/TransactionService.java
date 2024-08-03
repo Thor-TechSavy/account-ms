@@ -31,7 +31,6 @@ public class TransactionService {
     }
 
     public TransactionEntity createTransaction(TransactionEntity transactionEntity) {
-
         return transactionRepository.save(transactionEntity);
     }
 

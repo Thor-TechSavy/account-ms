@@ -1,13 +1,21 @@
 package com.quicktransfer.account.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class RequestTransactionDto {
 
+    @Schema(description = "uuid of the owner whose account is to be debited", requiredMode = Schema.RequiredMode.REQUIRED, example = "111111111111-1111-1111-1111-11111111")
     private UUID fromOwnerId;
+
+    @Schema(description = "uuid of the owner whose account is to be credited", requiredMode = Schema.RequiredMode.REQUIRED, example = "111111111111-1111-1111-1111-11111111")
     private UUID toOwnerId;
+
+    @Schema(description = "transaction amount", requiredMode = Schema.RequiredMode.REQUIRED, example = "100")
     private BigDecimal amount;
+
     private RequestIdentifierDto requestIdentifier;
 
     public UUID getFromOwnerId() {

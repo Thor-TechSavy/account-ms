@@ -5,6 +5,11 @@ import com.quicktransfer.account.dto.CreateAccountDto;
 import com.quicktransfer.account.entity.AccountEntity;
 import com.quicktransfer.account.exceptions.InvalidRequestException;
 import com.quicktransfer.account.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +29,15 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping
+    @Operation(summary = "To create the account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "account created", content =
+                    {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AccountDetailsDto.class))}),
+            @ApiResponse(responseCode = "400", description = "invalid request payload", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server error, the details are logged on "
+                    + "backend", content = @Content)})
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<AccountDetailsDto> createAccount(@RequestBody final CreateAccountDto accountDto) {
         validateAccountCreationRequest(accountDto);
 
@@ -36,8 +49,17 @@ public class AccountController {
 
     }
 
-    @GetMapping("/{ownerId}")
-    public ResponseEntity<AccountDetailsDto> findAccount(@PathVariable UUID ownerId) {
+    @Operation(summary = "To retrieve the account details by owner id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "account fetched successfully", content =
+                    {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AccountDetailsDto.class))}),
+            @ApiResponse(responseCode = "400", description = "invalid request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server error, the details are logged on "
+                    + "backend", content = @Content)})
+    @GetMapping(value = "/{ownerId}", produces = "application/json")
+    public ResponseEntity<AccountDetailsDto> getAccount(@PathVariable UUID ownerId) {
 
         AccountEntity account = accountService.getAccount(ownerId);
 

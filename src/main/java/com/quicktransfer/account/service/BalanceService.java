@@ -18,7 +18,11 @@ public class BalanceService {
         this.balanceRepository = balanceRepository;
     }
 
-    public void updateBalance(UUID ownerId, BigDecimal amount) {
+    public BalanceEntity getBalance(UUID ownerId) {
+        return balanceRepository.findByAccount_OwnerId(ownerId).orElseThrow(RuntimeException::new);
+    }
+
+    public BalanceEntity updateBalance(UUID ownerId, BigDecimal amount) {
         Optional<BalanceEntity> currentBalance = balanceRepository.findByAccount_OwnerId(ownerId);
         BalanceEntity balanceEntity = currentBalance.orElseThrow(RuntimeException::new);
 
@@ -26,10 +30,7 @@ public class BalanceService {
         balanceEntity.setAmount(updateAmount);
         balanceEntity.setLastUpdate(Instant.now());
 
-        balanceRepository.save(balanceEntity);
+       return balanceRepository.save(balanceEntity);
     }
 
-    public BalanceEntity getBalance(UUID ownerId) {
-        return balanceRepository.findByAccount_OwnerId(ownerId).orElseThrow(RuntimeException::new);
-    }
 }
