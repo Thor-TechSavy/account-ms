@@ -24,7 +24,7 @@ including service and repository layers.
 ## Project Structure & flow
 
 ### Overview
-![components.png](components.png)
+![img_6.png](img_6.png)
 ##### Controller
 
 - AccountController: Manages account creation and retrieval.
