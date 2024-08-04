@@ -15,7 +15,10 @@
 
 ## Introduction
 
-account-ms is a spring Boot project implements/part of a comprehensive Funds Transfer system with
+This funds-transfer-ms is a one of the microservice which constitutes the Quick Transfer application.
+![img_7.png](img_7.png)
+
+It is a spring Boot project thats implements/part of a comprehensive Funds Transfer system with
 three main controllers: AccountController, BalanceController, and TransactionController.
 These controllers handle various operations related to account management, balance management,
 and transaction processing. The project ensures structured flow and interaction between different layers,
@@ -95,6 +98,9 @@ ExchangeRateClient: Communicates with the external account exchange rate service
 
 1. Transaction works only when both the debit and the credit account exist.
 2. The exchange rate is retrieved from external API. In local environment, the mocked response is obtained when the call is made to this api.
+3. Use pessimistic locking to ensure data consistency in concurrent environment.
+4. persists the entities in in-memory h2 db.
+
 
 ## Tests and output
 
