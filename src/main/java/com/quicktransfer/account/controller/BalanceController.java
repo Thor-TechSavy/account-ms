@@ -1,6 +1,5 @@
 package com.quicktransfer.account.controller;
 
-import com.quicktransfer.account.dto.AccountDetailsDto;
 import com.quicktransfer.account.dto.BalanceDto;
 import com.quicktransfer.account.entity.BalanceEntity;
 import com.quicktransfer.account.service.BalanceService;

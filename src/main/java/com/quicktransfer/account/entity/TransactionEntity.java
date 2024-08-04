@@ -1,7 +1,7 @@
 package com.quicktransfer.account.entity;
 
-import jakarta.persistence.*;
 import com.quicktransfer.account.enums.TransactionStatus;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -34,7 +34,7 @@ public class TransactionEntity {
     @Column(name = "creditOperation")
     private BigDecimal creditOperation;
 
-    @Column(name = "requestIdentifier")
+    @Column(name = "requestIdentifier", nullable = false, unique = true)
     private String requestIdentifier;
 
     @Column(name = "status", nullable = false)

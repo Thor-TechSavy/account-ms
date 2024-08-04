@@ -1,12 +1,11 @@
 package com.quicktransfer.account.controller;
 
-import com.quicktransfer.account.dto.AccountDetailsDto;
+import com.quicktransfer.account.dto.RequestTransactionDto;
+import com.quicktransfer.account.dto.TransactionDetailsDto;
 import com.quicktransfer.account.entity.TransactionEntity;
 import com.quicktransfer.account.enums.TransactionStatus;
 import com.quicktransfer.account.exceptions.TransactionException;
 import com.quicktransfer.account.service.TransactionService;
-import com.quicktransfer.account.dto.RequestTransactionDto;
-import com.quicktransfer.account.dto.TransactionDetailsDto;
 import com.quicktransfer.account.util.JsonUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.quicktransfer.account.mapper.TransactionMapper.mapToDto;
@@ -47,16 +45,27 @@ public class TransactionController {
 
         String requestIdentifier = getRequestIdentifier(transactionDto);
 
-        ResponseEntity<TransactionDetailsDto> existingTransactionResponse =
-                checkIfTransactionAlreadyProcessed(requestIdentifier);
-        if (existingTransactionResponse != null) {
-            return existingTransactionResponse;
-        }
+        return transactionService.getTransaction(requestIdentifier)
+                .map(transactionEntity -> {
+                    if (transactionService.checkIfTransactionAlreadyProcessedOrFailed(transactionEntity)) {
+                        return ResponseEntity.ok(mapToDto(transactionEntity));
+                    }
+                    return processTransaction(transactionEntity);
+                })
+                .orElseGet(() -> createAndProcessTransaction(transactionDto));
+    }
+
+    private ResponseEntity<TransactionDetailsDto> createAndProcessTransaction(
+            RequestTransactionDto transactionDto) {
 
         TransactionEntity transactionEntity = mapToEntity(transactionDto);
         transactionEntity.setStatus(TransactionStatus.PROCESSING);
-
         TransactionEntity transaction = transactionService.createTransaction(transactionEntity);
+
+        return processTransaction(transaction);
+    }
+
+    private ResponseEntity<TransactionDetailsDto> processTransaction(TransactionEntity transaction) {
         try {
             transaction = transactionService.processTransaction(transaction);
             TransactionDetailsDto detailsDto = mapToDto(transaction);
@@ -64,7 +73,7 @@ public class TransactionController {
         } catch (TransactionException e) {
             transaction.setStatus(TransactionStatus.FAILED);
             transactionService.update(transaction);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -84,15 +93,6 @@ public class TransactionController {
         TransactionDetailsDto detailsDto = mapToDto(entity);
 
         return new ResponseEntity<>(detailsDto, HttpStatus.OK);
-    }
-
-    private ResponseEntity<TransactionDetailsDto> checkIfTransactionAlreadyProcessed(String requestIdentifier) {
-
-        Optional<TransactionEntity> existingTransaction = transactionService.getTransaction(requestIdentifier);
-        if (existingTransaction.isPresent() && existingTransaction.get().getStatus() == TransactionStatus.SUCCESSFUL) {
-            return new ResponseEntity<>(mapToDto(existingTransaction.get()), HttpStatus.OK);
-        }
-        return null;
     }
 
     private static String getRequestIdentifier(RequestTransactionDto transactionDto) {

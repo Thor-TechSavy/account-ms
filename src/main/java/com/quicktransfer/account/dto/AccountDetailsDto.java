@@ -1,6 +1,5 @@
 package com.quicktransfer.account.dto;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 public class AccountDetailsDto {
