@@ -2,35 +2,67 @@
 'https://plantuml.com/component-diagram
 
 package "Dto" {
-  [Account Dtos]
+  [CreateAccountDto]
+  [AccountDetailsDto]
+  [BalanceDto]
+  [RequestTransactionDto]
+  [TransactionDetailsDto]
 }
 
 package "Controller" {
-  [Account Http] --|> [Account Contract]
+  [AccountController] as account
+  [BalanceController] as balance
+  [TransactionController] as transaction
 }
 
 package "repository" {
-  [Account Repository]
+  [AccountRepository] as accountRepo
+  [BalanceRepository] as balanceRepo
+  [TransactionRepository] as transactionRepo
 }
 
 package "Service" {
-  [Account Service]
+  [AccountService] as accountService
+  [BalanceService] as balanceService
+  [TransactionService] as transactionService
+}
+
+package "client interface" {
+[exchangeRateClient] as exchangeRateInterface
 }
 
 database "Account DB" {
-  folder "Account table" as accounts {
-    [Account 1, 2, ..]
+  folder "Account table" as accountTable {
+    [Account 1 ..] as accountRecord
   }
+  folder "Balance table" as balanceTable {
+    [balance 1, ..] as balanceRecord
+  }
+  folder "Transaction table" as transactionTable {
+    [transaction 1, 2, ..]
+  }
+
+  accountRecord ..> balanceRecord : 1-1 mapping
 }
 
-Http -down-> [Account Http]
+'account creation
+Http --down-> account : create account
+account -> accountService
+accountService -> accountRepo
+accountRepo -> accountTable
 
-[Account Http] -> [Account Dtos]
+'balance addition
+Http -down-> balance : create balance
+balance --> balanceService
+balanceService --> balanceRepo
+balanceRepo --> balanceTable
 
-[Account Http] --> [Account Service]
-
-[Account Service] -> [Account Repository]
-
-[Account Repository] --> [Account DB]
+'debit credit operation
+Http -down-> transaction : perform debit-credit operation
+transaction --> transactionService
+transactionService --> exchangeRateInterface
+exchangeRateInterface -> external_Http_call
+transactionService --> transactionRepo
+transactionRepo --> transactionTable
 
 @enduml

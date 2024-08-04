@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+'Natural person professional description creation
+
+autonumber
+
+actor initiator as "Natural Person or Machine"
+control accountms as "Account-ms"
+
+database accountDB
+
+group account-creation
+note over of initiator: request payload to create account \nmust have firstName,\nlastName, dob, currency
+initiator -> accountms: send POST HTTP **/account** request to create an account \n with mandatory information
+
+accountms -> accountms: request payload is validated
+
+note over of accountms: Random UUID is \n assigned to ownerID
+accountms -> accountDB: creation of the account with 0 balance
+
+accountms --> initiator: returns the response dto with \n details like ownerID, etc
+end group
+
+group Get Account by OwnerId
+
+initiator -> accountms: send GET HTTP **/account/{ownerID}** request with ownerID
+accountDB --> accountms: fetch the account entity
+accountms --> initiator: returns the accountDetails dto
+end group
+
+group Add balance to account
+
+initiator -> accountms: send PUT HTTP **/account/balance/{ownerID}** request with ownerID
+accountDB --> accountms: fetch the account entity
+accountms -> accountms: update the balance to the\n account entity
+accountms -> accountDB: save the updated the account entity
+accountms --> initiator: returns the BalanceDto with the details like\n ownerID, balance, currency
+end group
+
+group GET Balance by ownerId
+initiator -> accountms: send GET HTTP **/account/balance/{ownerID}** request with ownerID
+accountDB --> accountms: fetch the account entity
+accountms --> initiator: returns the BalanceDto with the details like\n ownerID, balance, currency
+end group
+
+@enduml

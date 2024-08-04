@@ -1,0 +1,195 @@
+# account-transfer-ms
+
+[!Build Status]
+[!Coverage Status]
+
+## Table of Contents
+
+1. #### Introduction
+2. #### Project Structure & flow
+3. #### Installation
+4. #### Configuration
+5. #### How to run?
+6. #### Languages and framework
+7. #### Assumptions
+
+## Introduction
+
+account-ms is a spring Boot project implements/part of a comprehensive Funds Transfer system with
+three main controllers: AccountController, BalanceController, and TransactionController.
+These controllers handle various operations related to account management, balance management,
+and transaction processing. The project ensures structured flow and interaction between different layers,
+including service and repository layers.
+
+## Project Structure & flow
+
+### Overview
+![components.png](components.png)
+##### Controller
+
+- AccountController: Manages account creation and retrieval.
+- BalanceController: Handles balance retrieval and update operations.
+- TransactionController: Processes debit and credit transactions and retrieves transaction details.
+
+##### DTO (Data Transfer Objects)
+- the request and response DTOs.
+
+##### Service
+- Provides business logic and interacts with repositories to manage data operations.
+
+##### Repository
+- Manages data persistence and retrieval operations
+
+##### External Client
+
+ExchangeRateClient: Communicates with the external account exchange rate service to retrieve the currency exchange rate.
+
+- Account creation flow
+![img_3.png](img_3.png)
+- Get Account details and Add balance to account
+![img_4.png](img_4.png)
+- Get balance
+![img_5.png](img_5.png)
+
+## Installation
+
+### Prerequisites
+
+- Java 17
+- Spring-Boot 3.3.2
+- Maven
+- git
+
+## Configuration Steps
+
+1. configure the jdk - 17, in case you want to use another version, please make the necessary changes to
+   java.version in parent pom.xml
+
+2. Switch to develop branch. There are a couple of feature branches starting with feature/101 too.
+
+## How to run?
+
+1. Clone the repo - https://github.com/Thor-TechSavy/account-ms.git
+2. Validate the application properties.
+3. Build using Maven wrapper,
+   For WINDOWS,
+    - Ensure JAVA_HOME is set properly,
+    - navigate to project directory and do 'mvnw.cmd clean install'
+      ![img.png](img.png)
+
+   For Bash, ./mvnw clean install
+   ![img_1.png](img_1.png)
+
+4. OPTIONAL -You can also build using maven plugin in the IntelliJ
+   ![img_2.png](img_2.png)
+5. Start the application - using the intelliJ or via command via bash or commandLine
+6. ## Swagger Information
+   - Swagger UI: http://localhost:9000/swagger-ui.html
+   - OpenApi Json: http://localhost:9000/v3/api-docs
+
+## Languages and Framework
+
+- java 17, spring-boot, junit, jackson, slf4j, mockito
+
+## Assumptions
+
+1. Transaction works only when both the debit and the credit account exist.
+2. The exchange rate is retrieved from external API. In local environment, the mocked response is obtained when the call is made to this api.
+
+## Tests and output
+
+1. How to create account?
+```text
+
+URL: POST http://localhost:9000/v1/account
+PAYLOAD:
+{
+    "firstName": "CAPTAIN",
+    "lastName": "PLANET",
+    "dob": "17-10-2000",
+    "currency": "EUR"
+}
+
+RESPONSE: 
+{
+    "ownerId": "93bba033-a7f4-4505-8e9c-5109a8d1bdfc",
+    "firstName": "CAPTAIN",
+    "lastName": "PLANET",
+    "dob": "17-10-2000",
+    "currency": "EUR"
+}
+
+```
+2. how to fetch account?
+```text
+
+URL: GET http://localhost:9000/v1/account/{{ownerId}}
+
+RESPONSE: 
+{
+    "ownerId": "93bba033-a7f4-4505-8e9c-5109a8d1bdfc",
+    "firstName": "CAPTAIN",
+    "lastName": "PLANET",
+    "dob": "17-10-2000",
+    "currency": "EUR"
+}
+```
+
+
+3. How to add balance?
+```text
+
+URL: PUT http://localhost:9000/v1/account/balance/{{ownerId}}?amount={{amount}}
+
+RESPONSE: 
+{
+    "ownerId": "93bba033-a7f4-4505-8e9c-5109a8d1bdfc",
+    "balance": "20.0",
+    "currency": "EUR",
+    "lastUpdate": "2024-08-03T16:06:38.919517900Z"
+}
+```
+
+4. how to fetch balance?
+```text
+
+URL: GET http://localhost:9000/v1/account/balance/{{ownerId}}
+
+RESPONSE: 
+{
+    "ownerId": "93bba033-a7f4-4505-8e9c-5109a8d1bdfc",
+    "balance": "20.0",
+    "currency": "EUR",
+    "lastUpdate": "2024-08-03T16:06:38.919517900Z"
+}
+```
+5. how to perform transaction between two accounts
+```text
+
+URL: http://localhost:9000/v1/account/transaction
+
+PAYLOAD:
+{
+  "fromOwnerId": "11111111-1111-1111-1111-000011111111",
+  "toOwnerId": "11111111-1111-1111-1111-000011111111",
+  "amount": 100,
+  "requestIdentifier": {
+    "calleeName": "ZEUS",
+    "requestTime": "2024-08-03T16:06:38.919517900Z",
+    "transferRequestId": "11111111-1111-1111-1111-000011111111"
+  }
+}
+
+RESPONSE: 
+{
+  "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "fromOwnerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "toOwnerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "requestIdentifier": "string",
+  "amount": 0,
+  "transactionStatus": "SUCCESSFUL"
+}
+```
+
+
+

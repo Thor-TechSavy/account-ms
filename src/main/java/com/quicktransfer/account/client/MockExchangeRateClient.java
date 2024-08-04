@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-@Profile("local")
+@Profile("!dev")
 public class MockExchangeRateClient implements ExchangeRateClient {
 
     @Override
