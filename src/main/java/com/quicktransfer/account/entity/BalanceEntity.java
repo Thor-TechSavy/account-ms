@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "BALANCE")
@@ -50,5 +51,28 @@ public class BalanceEntity {
 
     public void setLastUpdate(Instant lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BalanceEntity that = (BalanceEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(account, that.account);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, account);
+    }
+
+    @Override
+    public String toString() {
+        return "BalanceEntity{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", account=" + account +
+                ", lastUpdate=" + lastUpdate +
+                '}';
     }
 }

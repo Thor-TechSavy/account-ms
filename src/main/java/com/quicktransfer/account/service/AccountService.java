@@ -5,6 +5,7 @@ import com.quicktransfer.account.entity.BalanceEntity;
 import com.quicktransfer.account.exceptions.AccountNotFoundException;
 import com.quicktransfer.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -62,6 +63,7 @@ public class AccountService {
      * @throws AccountNotFoundException if no account is found with the specified owner ID. This exception
      *                                  is thrown to indicate that the requested account does not exist.
      */
+    @Transactional
     public AccountEntity getAccount(UUID ownerId) throws AccountNotFoundException {
         return accountRepository.findByOwnerId(ownerId)
                 .orElseThrow(() -> new AccountNotFoundException("Account doesn't exist for owner id: " + ownerId));

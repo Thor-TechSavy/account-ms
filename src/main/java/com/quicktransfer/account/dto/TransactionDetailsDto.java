@@ -61,4 +61,16 @@ public class TransactionDetailsDto {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionDetailsDto{" +
+                "transactionId=" + transactionId +
+                ", fromOwnerId=" + fromOwnerId +
+                ", toOwnerId=" + toOwnerId +
+                ", requestIdentifier='" + requestIdentifier + '\'' +
+                ", amount=" + amount +
+                ", transactionStatus=" + transactionStatus +
+                '}';
+    }
 }

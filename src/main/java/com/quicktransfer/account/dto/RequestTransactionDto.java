@@ -51,4 +51,14 @@ public class RequestTransactionDto {
     public void setRequestIdentifier(RequestIdentifierDto requestIdentifier) {
         this.requestIdentifier = requestIdentifier;
     }
+
+    @Override
+    public String toString() {
+        return "RequestTransactionDto{" +
+                "fromOwnerId=" + fromOwnerId +
+                ", toOwnerId=" + toOwnerId +
+                ", amount=" + amount +
+                ", requestIdentifier=" + requestIdentifier +
+                '}';
+    }
 }

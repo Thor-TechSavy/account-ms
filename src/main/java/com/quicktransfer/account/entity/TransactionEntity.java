@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -127,5 +128,35 @@ public class TransactionEntity {
 
     public void setLastUpdateTime(Instant lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransactionEntity that = (TransactionEntity) o;
+        return Objects.equals(transactionUUID, that.transactionUUID) && Objects.equals(fromOwnerId, that.fromOwnerId) && Objects.equals(toOwnerId, that.toOwnerId) && Objects.equals(requestIdentifier, that.requestIdentifier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionUUID, fromOwnerId, toOwnerId, requestIdentifier);
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionEntity{" +
+                "id=" + id +
+                ", transactionUUID=" + transactionUUID +
+                ", fromOwnerId=" + fromOwnerId +
+                ", toOwnerId=" + toOwnerId +
+                ", txnAmt=" + txnAmt +
+                ", debitOperation=" + debitOperation +
+                ", creditOperation=" + creditOperation +
+                ", requestIdentifier='" + requestIdentifier + '\'' +
+                ", status=" + status +
+                ", creationTime=" + creationTime +
+                ", lastUpdateTime=" + lastUpdateTime +
+                '}';
     }
 }

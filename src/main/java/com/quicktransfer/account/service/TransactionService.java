@@ -59,6 +59,7 @@ public class TransactionService {
      * @return An {@link Optional} containing the {@link TransactionEntity} if a transaction with
      * the given request identifier exists; otherwise, an empty {@link Optional}.
      */
+    @Transactional
     public Optional<TransactionEntity> getTransaction(String requestIdentifier) {
         return transactionRepository.findByRequestIdentifier(requestIdentifier);
     }

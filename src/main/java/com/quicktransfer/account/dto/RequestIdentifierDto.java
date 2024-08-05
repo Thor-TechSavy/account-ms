@@ -38,4 +38,13 @@ public class RequestIdentifierDto {
     public void setTransferRequestId(UUID transferRequestId) {
         this.transferRequestId = transferRequestId;
     }
+
+    @Override
+    public String toString() {
+        return "RequestIdentifierDto{" +
+                "calleeName='" + calleeName + '\'' +
+                ", requestTime='" + requestTime + '\'' +
+                ", transferRequestId=" + transferRequestId +
+                '}';
+    }
 }

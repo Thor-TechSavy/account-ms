@@ -76,8 +76,9 @@ public class AccountController {
         var isFirstNameNullOrBlank = accountDto.getFirstName() == null || accountDto.getFirstName().isEmpty();
         var isLastNameNullOrBlank = accountDto.getLastName() == null || accountDto.getLastName().isEmpty();
         var isCurrencyNullOrBlank = accountDto.getCurrency() == null || accountDto.getCurrency().isEmpty();
+        var isDobNullOrBlank = accountDto.getDob() == null || accountDto.getDob().isEmpty();
 
-        if (isFirstNameNullOrBlank || isLastNameNullOrBlank || isCurrencyNullOrBlank) {
+        if (isFirstNameNullOrBlank || isLastNameNullOrBlank || isCurrencyNullOrBlank || isDobNullOrBlank) {
             throw new InvalidRequestException("Either firstName or lastName or currency or owner id is null");
         }
     }

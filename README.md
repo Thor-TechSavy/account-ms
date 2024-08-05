@@ -43,11 +43,16 @@ including service and repository layers.
 ##### Repository
 - Manages data persistence and retrieval operations
 
+##### Database
+![img_11.png](img_11.png)
+![img_12.png](img_12.png)
+![img_13.png](img_13.png)
+
 ##### External Client
 
 ExchangeRateClient: Communicates with the external account exchange rate service to retrieve the currency exchange rate.
 
-- Account creation flow
+##### Account creation flow
 ![img_3.png](img_3.png)
 - Get Account details and Add balance to account
 ![img_4.png](img_4.png)
@@ -101,7 +106,8 @@ ExchangeRateClient: Communicates with the external account exchange rate service
 1. For the debit/credit request, the transaction is created with PROCESSING status.
 2. The status is change to SUCCESSFUL or FAILED.
 3. Transaction works only when both the debit and the credit account exist.
-4. The exchange rate is retrieved from external API. In local environment, the mocked response is obtained when the call is made to this api.
+4. The exchange rate is retrieved from external API. In local environment,
+the mocked response (returns .85 for every currency exchange request) is obtained when the call is made to this api.
 5. Use pessimistic locking to ensure data consistency in concurrent environment.
 6. persists the entities in in-memory h2 db.
 
@@ -129,7 +135,10 @@ RESPONSE:
     "currency": "EUR"
 }
 
+
 ```
+![img_8.png](img_8.png)
+
 2. how to fetch account?
 ```text
 
@@ -159,6 +168,7 @@ RESPONSE:
     "lastUpdate": "2024-08-03T16:06:38.919517900Z"
 }
 ```
+![img_9.png](img_9.png)
 
 4. how to fetch balance?
 ```text
@@ -200,6 +210,8 @@ RESPONSE:
   "transactionStatus": "SUCCESSFUL"
 }
 ```
+![img_10.png](img_10.png)
+
 
 
 

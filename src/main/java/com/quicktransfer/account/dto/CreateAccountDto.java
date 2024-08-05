@@ -48,4 +48,13 @@ public class CreateAccountDto {
         return currency;
     }
 
+    @Override
+    public String toString() {
+        return "CreateAccountDto{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", currency='" + currency + '\'' +
+                '}';
+    }
 }

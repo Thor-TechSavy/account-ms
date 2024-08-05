@@ -49,4 +49,15 @@ public class AccountDetailsDto {
     public UUID getOwnerId() {
         return ownerId;
     }
+
+    @Override
+    public String toString() {
+        return "AccountDetailsDto{" +
+                "ownerId=" + ownerId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", currency='" + currency + '\'' +
+                '}';
+    }
 }

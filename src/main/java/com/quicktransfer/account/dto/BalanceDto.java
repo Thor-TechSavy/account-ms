@@ -42,4 +42,14 @@ public class BalanceDto {
     public void setLastUpdate(Instant lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+
+    @Override
+    public String toString() {
+        return "BalanceDto{" +
+                "ownerId=" + ownerId +
+                ", balance=" + balance +
+                ", currency='" + currency + '\'' +
+                ", lastUpdate=" + lastUpdate +
+                '}';
+    }
 }

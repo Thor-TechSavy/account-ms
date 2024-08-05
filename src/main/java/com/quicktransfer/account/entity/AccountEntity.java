@@ -3,6 +3,7 @@ package com.quicktransfer.account.entity;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -96,5 +97,33 @@ public class AccountEntity {
 
     public void setBalance(BalanceEntity balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountEntity that = (AccountEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(ownerId, that.ownerId) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(dob, that.dob) && Objects.equals(currency, that.currency) && Objects.equals(creationTime, that.creationTime) && Objects.equals(lastUpdateTime, that.lastUpdateTime) && Objects.equals(balance, that.balance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ownerId);
+    }
+
+    @Override
+    public String toString() {
+        return "AccountEntity{" +
+                "id=" + id +
+                ", ownerId=" + ownerId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", currency='" + currency + '\'' +
+                ", creationTime=" + creationTime +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", balance=" + balance +
+                '}';
     }
 }
