@@ -11,7 +11,7 @@ public class AccountMapper {
     }
 
     public static AccountDetailsDto mapToDto(AccountEntity accountEntity) {
-        AccountDetailsDto accountDetailsDto = new AccountDetailsDto();
+        var accountDetailsDto = new AccountDetailsDto();
         accountDetailsDto.setOwnerId(accountEntity.getOwnerId());
         accountDetailsDto.setCurrency(accountEntity.getCurrency());
         accountDetailsDto.setFirstName(accountEntity.getFirstName());
@@ -21,7 +21,7 @@ public class AccountMapper {
     }
 
     public static AccountEntity mapToEntity(CreateAccountDto accountDto) {
-        AccountEntity accountEntity = new AccountEntity();
+        var accountEntity = new AccountEntity();
 
         accountEntity.setCurrency(accountDto.getCurrency());
         accountEntity.setFirstName(accountDto.getFirstName());

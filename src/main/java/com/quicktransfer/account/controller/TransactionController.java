@@ -43,7 +43,7 @@ public class TransactionController {
     public ResponseEntity<TransactionDetailsDto> performDebitAndCreditOperations(
             @RequestBody RequestTransactionDto transactionDto) {
 
-        String requestIdentifier = getRequestIdentifier(transactionDto);
+        var requestIdentifier = getRequestIdentifier(transactionDto);
 
         return transactionService.getTransaction(requestIdentifier)
                 .map(transactionEntity -> {
@@ -58,7 +58,7 @@ public class TransactionController {
     private ResponseEntity<TransactionDetailsDto> createAndProcessTransaction(
             RequestTransactionDto transactionDto) {
 
-        TransactionEntity transactionEntity = mapToEntity(transactionDto);
+        var transactionEntity = mapToEntity(transactionDto);
         transactionEntity.setStatus(TransactionStatus.PROCESSING);
         TransactionEntity transaction = transactionService.createTransaction(transactionEntity);
 
@@ -68,7 +68,7 @@ public class TransactionController {
     private ResponseEntity<TransactionDetailsDto> processTransaction(TransactionEntity transaction) {
         try {
             transaction = transactionService.processTransaction(transaction);
-            TransactionDetailsDto detailsDto = mapToDto(transaction);
+            var detailsDto = mapToDto(transaction);
             return new ResponseEntity<>(detailsDto, HttpStatus.CREATED);
         } catch (TransactionException e) {
             transaction.setStatus(TransactionStatus.FAILED);
@@ -89,8 +89,8 @@ public class TransactionController {
     @GetMapping(value = "/{transactionUUID}", produces = "application/json")
     public ResponseEntity<TransactionDetailsDto> getTransaction(@PathVariable UUID transactionUUID) {
 
-        TransactionEntity entity = transactionService.getTransaction(transactionUUID);
-        TransactionDetailsDto detailsDto = mapToDto(entity);
+        var entity = transactionService.getTransaction(transactionUUID);
+        var detailsDto = mapToDto(entity);
 
         return new ResponseEntity<>(detailsDto, HttpStatus.OK);
     }

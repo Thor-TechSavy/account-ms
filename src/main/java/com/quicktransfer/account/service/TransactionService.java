@@ -105,13 +105,13 @@ public class TransactionService {
     @Transactional
     public TransactionEntity processTransaction(TransactionEntity transaction) throws TransactionException {
 
-        AccountEntity fromAccount = accountService.getAccount(transaction.getFromOwnerId());
-        AccountEntity toAccount = accountService.getAccount(transaction.getToOwnerId());
+        var fromAccount = accountService.getAccount(transaction.getFromOwnerId());
+        var toAccount = accountService.getAccount(transaction.getToOwnerId());
 
         validateDebitAccountBalance(transaction.getTxnAmt(), fromAccount.getBalance().getAmount(),
                 transaction.getFromOwnerId());
 
-        double exchangeRate = getExchangeRate(fromAccount.getCurrency(), toAccount.getCurrency());
+        var exchangeRate = getExchangeRate(fromAccount.getCurrency(), toAccount.getCurrency());
 
         performDebit(transaction.getTxnAmt(), fromAccount);
         performCredit(transaction.getTxnAmt(), exchangeRate, toAccount);
@@ -122,14 +122,14 @@ public class TransactionService {
     }
 
     private void performCredit(BigDecimal amount, double exchangeRate, AccountEntity toAccount) {
-        BigDecimal adjustedAmountToCredit = amount.multiply(BigDecimal.valueOf(exchangeRate));
-        BigDecimal amountAfterCredit = toAccount.getBalance().getAmount().add(adjustedAmountToCredit);
+        var adjustedAmountToCredit = amount.multiply(BigDecimal.valueOf(exchangeRate));
+        var amountAfterCredit = toAccount.getBalance().getAmount().add(adjustedAmountToCredit);
         toAccount.getBalance().setAmount(amountAfterCredit);
         accountService.updateAccount(toAccount);
     }
 
     private void performDebit(BigDecimal amount, AccountEntity fromAccount) {
-        BigDecimal amountAfterDebit = fromAccount.getBalance().getAmount().subtract(amount);
+        var amountAfterDebit = fromAccount.getBalance().getAmount().subtract(amount);
         fromAccount.getBalance().setAmount(amountAfterDebit);
         accountService.updateAccount(fromAccount);
     }
@@ -141,7 +141,7 @@ public class TransactionService {
     }
 
     private double getExchangeRate(String sourceCurrency, String targetCurrency) {
-        double exchangeRate = 1.0;
+        var exchangeRate = 1.0;
         if (!sourceCurrency.equals(targetCurrency)) {
             exchangeRate = exchangeRateClient
                     .getExchangeRate(sourceCurrency, targetCurrency)

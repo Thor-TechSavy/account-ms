@@ -36,7 +36,7 @@ public class AccountService {
      */
     public AccountEntity createAccount(AccountEntity accountEntity) {
 
-        BalanceEntity balanceEntity = new BalanceEntity();
+        var balanceEntity = new BalanceEntity();
         balanceEntity.setAmount(new BigDecimal(0));
         balanceEntity.setAccount(accountEntity);
         balanceEntity.setLastUpdate(Instant.now());

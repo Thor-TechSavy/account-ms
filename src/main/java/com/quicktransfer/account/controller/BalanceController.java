@@ -1,7 +1,6 @@
 package com.quicktransfer.account.controller;
 
 import com.quicktransfer.account.dto.BalanceDto;
-import com.quicktransfer.account.entity.BalanceEntity;
 import com.quicktransfer.account.service.BalanceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,8 +37,8 @@ public class BalanceController {
                     + "backend", content = @Content)})
     @GetMapping(value = "/{ownerId}", produces = "application/json")
     public ResponseEntity<BalanceDto> getBalance(@PathVariable("ownerId") UUID ownerId) {
-        BalanceEntity balanceEntity = balanceService.getBalance(ownerId);
 
+        var balanceEntity = balanceService.getBalance(ownerId);
         return new ResponseEntity<>(mapToDto(balanceEntity), HttpStatus.OK);
 
     }
@@ -54,8 +53,8 @@ public class BalanceController {
                     + "backend", content = @Content)})
     @PutMapping(value = "/{ownerId}", produces = "application/json")
     public ResponseEntity<BalanceDto> updateBalance(@PathVariable("ownerId") UUID ownerId, @RequestParam BigDecimal amount) {
-        BalanceEntity balanceEntity = balanceService.updateBalance(ownerId, amount);
 
+        var balanceEntity = balanceService.updateBalance(ownerId, amount);
         return new ResponseEntity<>(mapToDto(balanceEntity), HttpStatus.OK);
     }
 

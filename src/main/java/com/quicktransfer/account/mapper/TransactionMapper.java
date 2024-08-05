@@ -13,12 +13,12 @@ public class TransactionMapper {
     }
 
     public static TransactionEntity mapToEntity(RequestTransactionDto transactionDto) {
-        TransactionEntity transactionEntity = new TransactionEntity();
+        var transactionEntity = new TransactionEntity();
         transactionEntity.setFromOwnerId(transactionDto.getFromOwnerId());
         transactionEntity.setToOwnerId(transactionDto.getToOwnerId());
         transactionEntity.setTxnAmt(transactionDto.getAmount());
         try {
-            String jsonIdentifier = JsonUtil.getMapper().writeValueAsString(transactionDto.getRequestIdentifier());
+            var jsonIdentifier = JsonUtil.getMapper().writeValueAsString(transactionDto.getRequestIdentifier());
             transactionEntity.setRequestIdentifier(jsonIdentifier);
         } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             throw new TransactionException(e.getMessage());
@@ -27,7 +27,7 @@ public class TransactionMapper {
     }
 
     public static TransactionDetailsDto mapToDto(TransactionEntity entity) {
-        TransactionDetailsDto detailsDto = new TransactionDetailsDto();
+        var detailsDto = new TransactionDetailsDto();
         detailsDto.setAmount(entity.getCreditOperation());
         detailsDto.setFromOwnerId(entity.getFromOwnerId());
         detailsDto.setToOwnerId(entity.getToOwnerId());

@@ -39,12 +39,16 @@ public class AccountController {
                     + "backend", content = @Content)})
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<AccountDetailsDto> createAccount(@RequestBody final CreateAccountDto accountDto) {
-        validateAccountCreationRequest(accountDto);
+
+        try {
+            validateAccountCreationRequest(accountDto);
+        } catch (InvalidRequestException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         AccountEntity accountEntity = accountService.createAccount(mapToEntity(accountDto));
 
         AccountDetailsDto accountDetailsDto = mapToDto(accountEntity);
-
         return new ResponseEntity<>(accountDetailsDto, HttpStatus.CREATED);
 
     }
@@ -61,18 +65,17 @@ public class AccountController {
     @GetMapping(value = "/{ownerId}", produces = "application/json")
     public ResponseEntity<AccountDetailsDto> getAccount(@PathVariable UUID ownerId) {
 
-        AccountEntity account = accountService.getAccount(ownerId);
+        var account = accountService.getAccount(ownerId);
 
-        AccountDetailsDto accountDetailsDto = mapToDto(account);
-
+        var accountDetailsDto = mapToDto(account);
         return new ResponseEntity<>(accountDetailsDto, HttpStatus.OK);
     }
 
 
     private void validateAccountCreationRequest(final CreateAccountDto accountDto) {
-        boolean isFirstNameNullOrBlank = accountDto.getFirstName() == null || accountDto.getFirstName().isEmpty();
-        boolean isLastNameNullOrBlank = accountDto.getLastName() == null || accountDto.getLastName().isEmpty();
-        boolean isCurrencyNullOrBlank = accountDto.getCurrency() == null || accountDto.getCurrency().isEmpty();
+        var isFirstNameNullOrBlank = accountDto.getFirstName() == null || accountDto.getFirstName().isEmpty();
+        var isLastNameNullOrBlank = accountDto.getLastName() == null || accountDto.getLastName().isEmpty();
+        var isCurrencyNullOrBlank = accountDto.getCurrency() == null || accountDto.getCurrency().isEmpty();
 
         if (isFirstNameNullOrBlank || isLastNameNullOrBlank || isCurrencyNullOrBlank) {
             throw new InvalidRequestException("Either firstName or lastName or currency or owner id is null");

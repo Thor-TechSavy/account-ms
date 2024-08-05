@@ -89,17 +89,21 @@ ExchangeRateClient: Communicates with the external account exchange rate service
 6. ## Swagger Information
    - Swagger UI: http://localhost:9000/swagger-ui.html
    - OpenApi Json: http://localhost:9000/v3/api-docs
-
+7. IN MEMORY H2 DB
+   - link: http://localhost:9000/h2-console/login.jsp
+   - Jdbc url: jdbc:h2:accountdb
 ## Languages and Framework
 
 - java 17, spring-boot, junit, jackson, slf4j, mockito
 
 ## Assumptions
 
-1. Transaction works only when both the debit and the credit account exist.
-2. The exchange rate is retrieved from external API. In local environment, the mocked response is obtained when the call is made to this api.
-3. Use pessimistic locking to ensure data consistency in concurrent environment.
-4. persists the entities in in-memory h2 db.
+1. For the debit/credit request, the transaction is created with PROCESSING status.
+2. The status is change to SUCCESSFUL or FAILED.
+3. Transaction works only when both the debit and the credit account exist.
+4. The exchange rate is retrieved from external API. In local environment, the mocked response is obtained when the call is made to this api.
+5. Use pessimistic locking to ensure data consistency in concurrent environment.
+6. persists the entities in in-memory h2 db.
 
 
 ## Tests and output

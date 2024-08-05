@@ -9,7 +9,7 @@ public class BalanceMapper {
     }
 
     public static BalanceDto mapToDto(BalanceEntity balanceEntity) {
-        BalanceDto balanceDto = new BalanceDto();
+        var balanceDto = new BalanceDto();
         balanceDto.setBalance(balanceEntity.getAmount());
         balanceDto.setOwnerId(balanceEntity.getAccount().getOwnerId());
         balanceDto.setCurrency(balanceEntity.getAccount().getCurrency());
