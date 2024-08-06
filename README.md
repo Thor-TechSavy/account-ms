@@ -15,7 +15,7 @@
 
 ## Introduction
 
-This funds-transfer-ms is a one of the microservice which constitutes the Quick Transfer application.
+This account-ms is a one of the microservice which constitutes the Quick Transfer application.
 ![img_7.png](img_7.png)
 
 It is a spring Boot project thats implements/part of a comprehensive Funds Transfer system with
